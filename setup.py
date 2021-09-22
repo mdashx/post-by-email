@@ -1,7 +1,7 @@
 import os
 from setuptools import find_packages, setup
 
-POST_BY_EMAIL_VERSION = os.getenv("POST_BY_EMAIL_VERSION", "0.1-rc1")
+POST_BY_EMAIL_VERSION = os.getenv("VERSION", "0.1-rc1")
 
 setup(
     name="post_by_email",
@@ -12,4 +12,5 @@ setup(
     install_requires=[
         "python-dotenv",
     ],
+    scripts=["bin/post_by_email"],
 )

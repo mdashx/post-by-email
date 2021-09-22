@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+# -*- mode: python -*-
+
+from post_by_email.get_emails import get_emails
+from post_by_email.version_commands import deploy, pull_changes, push_changes
+from post_by_email.create_post import create_doc, save_doc, title_to_slug
+
+
+if __name__ == "__main__":
+    # Make sure our repo is up to date with upstream
+    pull_changes()
+
+    # Fetch the emails and write new posts to filesystem
+    emails = get_emails()
+    for email in emails:
+        slug = title_to_slug(email["title"])
+        doc = create_doc(email)
+        save_doc(slug, doc)
+
+    # Push our changes upstream
+    push_changes()
+
+    # Deploy to server
+    deploy()

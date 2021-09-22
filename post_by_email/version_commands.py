@@ -24,5 +24,21 @@ def pull_changes():
 
 def push_changes():
     os.chdir(settings.PROJECT_PATH)
-    subprocess.run(["git", "checkout", "master"])
+    subprocess.run(["git", "add", "."])
+    subprocess.run(["git", "commit", "-m", "Auto-committed by 'post_by_email'"])
     subprocess.run(["git", "push", "origin", "master"])
+
+
+def deploy():
+    """Sorry, this deploy command is really specific to my blog"""
+    os.chdir(settings.PROJECT_PATH)
+    subprocess.run(
+        [
+            "make",
+            "deploy",
+            f"USER={settings.USER}",
+            f"HOST={settings.HOST}",
+            f"WORKING_DIR={settings.WORKING_DIR}",
+            f"HOST_DOMAIN={settings.HOST_DOMAIN}",
+        ]
+    )
