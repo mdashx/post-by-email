@@ -11,3 +11,4 @@ APPROVED_SENDER = os.getenv("APPROVED_SENDER")
 
 GIT_REPO = os.getenv("GIT_REPO")
 PROJECT_PATH = os.getenv("PROJECT_PATH")
+CONTENT_PATH = os.getenv("CONTENT_PATH")
