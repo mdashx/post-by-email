@@ -53,5 +53,15 @@ install: clean dist
 	scp dist/post_by_email-${VERSION}-py3-none-any.whl ${USER}@${HOST}:/home/${USER}/post-by-email-app/post_by_email-${VERSION}-py3-none-any.whl
 	ssh ${USER}@${HOST} 'source .virtualenv/py3/bin/activate && pip uninstall -y post_by_email'
 	ssh ${USER}@${HOST} 'source .virtualenv/py3/bin/activate && pip install /home/${USER}/post-by-email-app/post_by_email-${VERSION}-py3-none-any.whl'
+	scp ./.env ${USER}@${HOST}:/home/${USER}/post-by-email-app/.env
 
-#	scp ./.env ${USER}@${HOST}:/home/${USER}/${WORKING_DIR}/.env
+# Create cron jobs
+.PHONY: cron
+cron:
+	python ./bin/create_cronjob
+	scp etc/crontab.sh ${USER}@${HOST}:/home/${USER}/${WORKING_DIR}
+	ssh ${USER}@${HOST}	'cat ${WORKING_DIR}/crontab.sh | crontab -'
+
+.PHONY: cron-l
+cron-l:
+	ssh ${USER}@${HOST}	'crontab -l'

@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+# -*- mode: python -*-
+
+from post_by_email import settings
+
+env_vars = [
+    "EMAIL_HOST",
+    "EMAIL_USER",
+    "EMAIL_PASS",
+    "EMAIL_RECIPIENT",
+    "APPROVED_SENDER",
+    "GIT_REPO",
+    "PROJECT_PATH",
+    "CONTENT_PATH",
+    "USER",
+    "HOST",
+    "WORKING_DIR",
+    "HOST_DOMAIN",
+]
+
+if __name__ == "__main__":
+    var_str = ""
+    for env_var in env_vars:
+        var_str += f"{env_var}="
+        var_str += getattr(settings, env_var)
+        var_str += " "
+
+    command = f"/home/{getattr(settings, 'USER')}/.virtualenv/py3/bin/post_by_email"
+    cron_timing = "*/2 * * * *"
+
+    with open("./etc/crontab.sh", "w") as fh:
+        fh.write(cron_timing + " " + var_str + command + "\n")

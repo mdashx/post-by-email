@@ -12,5 +12,5 @@ setup(
     install_requires=[
         "python-dotenv",
     ],
-    scripts=["bin/post_by_email"],
+    scripts=["bin/post_by_email", "bin/create_cronjob"],
 )
