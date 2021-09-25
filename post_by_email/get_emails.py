@@ -27,6 +27,17 @@ EMAIL_RECIPIENT = settings.EMAIL_RECIPIENT
 APPROVED_SENDER = settings.APPROVED_SENDER
 
 
+def extract_headers(headers):
+    """This function takes the email headers as a string and returns a tuple with the date and then the subject."""
+
+    publish_date = headers.split("Subject:")[0].split("Date:")[1].strip()
+    publish_date = email.utils.parsedate_to_datetime(publish_date)
+    publish_date = publish_date.strftime("%Y-%m-%d")
+
+    title = headers.split("Subject:")[1].strip()
+    return (publish_date, title)
+
+
 def get_emails():
     conn = IMAP4_SSL(host=EMAIL_HOST)
     conn.login(EMAIL_USER, EMAIL_PASS)
@@ -41,10 +52,7 @@ def get_emails():
             msg_num, "BODY[HEADER.FIELDS (DATE SUBJECT)]"
         )
         headers = header_response[0][1].decode("utf8")
-        title = headers.split("Subject:")[1].strip()
-        publish_date = headers.split("Subject:")[0].split("Date:")[1].strip()
-        publish_date = email.utils.parsedate_to_datetime(publish_date)
-        publish_date = publish_date.strftime("%Y-%m-%d")
+        title, publish_date = extract_headers(headers)
         response_code, body_response = conn.fetch(msg_num, "BODY[TEXT]")
 
         # Get the plain text part of the message
