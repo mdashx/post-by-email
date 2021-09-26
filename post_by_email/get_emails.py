@@ -35,7 +35,7 @@ def extract_headers(headers):
     publish_date = publish_date.strftime("%Y-%m-%d")
 
     title = headers.split("Subject:")[1].strip()
-    return (publish_date, title)
+    return publish_date, title
 
 
 def get_emails():
@@ -52,7 +52,7 @@ def get_emails():
             msg_num, "BODY[HEADER.FIELDS (DATE SUBJECT)]"
         )
         headers = header_response[0][1].decode("utf8")
-        title, publish_date = extract_headers(headers)
+        publish_date, title = extract_headers(headers)
         response_code, body_response = conn.fetch(msg_num, "BODY[TEXT]")
 
         # Get the plain text part of the message
