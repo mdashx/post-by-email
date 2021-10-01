@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- mode: python -*-
 
-from post_by_email.get_emails import get_emails
+from post_by_email.get_emails import get_emails, parse_body, parse_headers
 from post_by_email.version_commands import deploy, pull_changes, push_changes
 from post_by_email.create_post import create_doc, save_doc, title_to_slug
 
@@ -13,6 +13,10 @@ if __name__ == "__main__":
     # Fetch the emails and write new posts to filesystem
     emails = get_emails()
     for email in emails:
+
+        email["title"], email["date"] = parse_headers(email["headers"])
+        email["body"] = parse_body(email["body"])
+
         slug = title_to_slug(email["title"])
         doc = create_doc(email)
         save_doc(slug, doc)
